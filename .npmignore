@@ -1,0 +1,4 @@
+target/*.test.*
+src
+node_modules
+.vscode

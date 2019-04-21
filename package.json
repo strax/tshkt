@@ -1,0 +1,21 @@
+{
+  "name": "tshkt",
+  "description": "Encoding of higher-kinded types in TypeScript",
+  "version": "0.0.1",
+  "main": "target/index.js",
+  "typings": "target/index.d.ts",
+  "author": {
+    "name": "Sami Kukkonen",
+    "email": "sami@samikukkonen.fi"
+  },
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "typescript": ">= 3.4.4"
+  },
+  "devDependencies": {
+    "typescript": "3.4.4"
+  }
+}
