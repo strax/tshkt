@@ -37,8 +37,8 @@ class Box<A> {
 To encode the type constructor `Box` we write
 
 ```typescript
-interface BoxRepr extends Repr<Box<unknown>> {
-  type: this extends Generic<BoxRepr, infer A> ? Box<A> : never
+interface BoxRepr extends Repr {
+  type: Box<this["argument"]>
 }
 ```
 

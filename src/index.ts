@@ -3,28 +3,38 @@
  *
  * ```typescript
  * // Assumes a type Box<A> is defined
- * interface BoxRepr extends Repr<Box<unknown>> {
- *  type: this extends Generic<BoxRepr, infer A> ? Box<A> : never
+ * interface BoxRepr extends Repr {
+ *  type: Box<this["argument"]>
  * }
  * ```
  */
-export interface Repr<TWitness = unknown> {
-  witness: TWitness
+export interface Repr {
+  argument: unknown
   type: unknown
 }
 
 /**
  * A `Generic<T, A>` is the defunctionalized representation of type `T<A>`.
+ * By intersecting `TRepr` and `TypeArgument<TArgument>` we get a type
+ * ```typescript
+ * {
+ *   type: T<A>
+ *   argument: A
+ * }
+ * ```
  */
-export interface Generic<TTypeConstructor, TArgument> {
-  constructor: TTypeConstructor
-  argument: TArgument
-}
+export type Generic<TRepr, TArgument> = TRepr & TypeArgument<TArgument>
 
 export namespace Generic {
+  /**
+   * A marker symbol for associating values of `T<A>` to `Generic<TRepr, A>`.
+   */
   export declare const repr: unique symbol
 }
 
+export interface TypeArgument<T = unknown> {
+  argument: T
+}
 
 /**
  * A concrete type `T<A>` needs to have an association to its corresponding Repr:
@@ -55,4 +65,4 @@ export interface HasGeneric<T, A> {
  * type test = Of<BoxRepr, string> // ==> Box<string>
  * ```
  */
-export type Of<T, A> = T extends Repr ? (T & Generic<T, A>)["type"] : HasGeneric<T, A>
+export type Of<T, A> = [T] extends [Repr] ? Generic<T, A>["type"] : HasGeneric<T, A>
