@@ -25,11 +25,11 @@ export interface Repr {
  */
 export type Generic<TRepr, TArgument> = TRepr & TypeArgument<TArgument>
 
-export declare namespace Generic {
+export namespace Generic {
   /**
    * A marker symbol for associating values of `T<A>` to `Generic<TRepr, A>`.
    */
-  export const repr: unique symbol
+  export const repr: unique symbol = Symbol("Generic.repr")
 }
 
 export interface TypeArgument<T = unknown> {
