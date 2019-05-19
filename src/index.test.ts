@@ -1,14 +1,20 @@
-import { Generic, Repr, Of } from ".";
+import { Generic, HFunction, Of, Kind1, Generic1, Kind2, Generic2, Of2 } from ".";
 
 declare class Box<A> {
-  [Generic.repr]: Generic<BoxRepr, A>
+  [Generic.Type]: Generic1<BoxF, A>
 
   readonly value: A
 }
 
-interface BoxRepr extends Repr {
-  type: Box<this["argument"]>
+interface BoxF extends HFunction<Kind1> {
+  (): Box<this[0]>
 }
+
+interface CrossF extends HFunction<Kind2> {
+  <A extends this[0], B extends this[1]>(): [A, B]
+}
+
+type x = Of2<CrossF, string, number>
 
 declare const enum Pass {}
 
@@ -16,7 +22,7 @@ type Eq<A, B> = [A] extends [B] ? [B] extends [A] ? true : false : false
 type Assert<T extends true> = Pass
 
 namespace test$1 {
-  export type Result = Assert<Eq<Of<BoxRepr, string>, Box<string>>>
+  export type Result = Assert<Eq<Of<BoxF, string>, Box<string>>>
 }
 
 namespace test$2 {
@@ -51,7 +57,7 @@ namespace test$5 {
     return lift([a, a] as const)
   }
   declare function Box<T>(x: T): Box<T>
-  const result = duplicate(box, b => b.value, Box)
+  const result = duplicate(box, fb => fb.value, Box)
   export type Result = Assert<Eq<typeof result, Box<readonly [string, string]>>>
 }
 
@@ -74,4 +80,24 @@ namespace test$6 {
 
   const mapped = map(BoxFunctor, box, _ => parseInt(_, 10))
   export type Result = Assert<Eq<typeof mapped, Box<number>>>
+}
+
+// Tests kinds * -> * -> *
+namespace test$7 {
+  class Pair<A, B> {
+    [Generic.Type]: Generic2<Pair$λ, A, B>
+
+    constructor(readonly _0: A, readonly _1: B) {}
+  }
+
+  interface Pair$λ extends HFunction<Kind2> {
+    (): Pair<this[0], this[1]>
+  }
+
+  declare function infer2<T extends HFunction<Kind2>, A1, A2>(t: Of2<T, A1, A2>): Of2<T, A1, A2>
+
+  declare const pair: Pair<string, number>
+  declare const box: Box<string>
+
+  const x = infer2(pair)
 }
