@@ -13,7 +13,7 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "typescript": ">= 3.4.4"
+    "typescript": ">= 3.5.0-rc"
   },
   "devDependencies": {
     "typescript": "3.5.0-dev.20190525"
