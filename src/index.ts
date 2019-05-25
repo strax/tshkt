@@ -23,7 +23,7 @@ type Generic3$Constraint<T, A1, A2, A3> = T extends TypeFamily<Kind3> ? HasGener
 type Generic4$Constraint<T, A1, A2, A3, A4> = T extends TypeFamily<Kind4> ? HasGeneric<Generic4<T, A1, A2, A3, A4>> : HasGeneric<Generic4<TypeFamily<Kind4>, A1, A2, A3, A4>>
 
 /**
- * Transforms `T` and `A` into `T<A>` if `T` extends `HFunction`. The bound `HasGeneric<T, A>` is used
+ * Transforms `T` and `A` into `T<A>` if `T` extends `TypeFamily`. The bound `HasGeneric<T, A>` is used
  * to allow type inference to function propely when `Of<T, A>` is used in function parameter positions.
  *
  * ```typescript
