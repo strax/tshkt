@@ -1,4 +1,4 @@
-import { Generic, HFunction, Of, Kind1, Generic1, Kind2, Generic2, Of2 } from ".";
+import { Generic, TypeFamily, Of, Kind1, Generic1, Kind2, Generic2, Of2 } from ".";
 
 declare class Box<A> {
   [Generic.Type]: Generic1<BoxF, A>
@@ -6,11 +6,11 @@ declare class Box<A> {
   readonly value: A
 }
 
-interface BoxF extends HFunction<Kind1> {
+interface BoxF extends TypeFamily<Kind1> {
   (): Box<this[0]>
 }
 
-interface CrossF extends HFunction<Kind2> {
+interface CrossF extends TypeFamily<Kind2> {
   <A extends this[0], B extends this[1]>(): [A, B]
 }
 
@@ -90,11 +90,11 @@ namespace test$7 {
     constructor(readonly _0: A, readonly _1: B) {}
   }
 
-  interface Pair$λ extends HFunction<Kind2> {
+  interface Pair$λ extends TypeFamily<Kind2> {
     (): Pair<this[0], this[1]>
   }
 
-  declare function infer2<T extends HFunction<Kind2>, A1, A2>(t: Of2<T, A1, A2>): Of2<T, A1, A2>
+  declare function infer2<T extends TypeFamily<Kind2>, A1, A2>(t: Of2<T, A1, A2>): Of2<T, A1, A2>
 
   declare const pair: Pair<string, number>
   declare const box: Box<string>
