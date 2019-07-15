@@ -5,7 +5,7 @@ export { Kind1, Kind2, Kind3, Kind4 } from "./kinds"
 export { HasGeneric, Generic1, Generic2, Generic3, Generic4, Generic } from "./generics";
 
 /**
- * A `HFunction` type is an encoding for a closed type family. Its type parameter `K` denotes the kind of the type.
+ * A `TypeFamily` type is an encoding for a closed type family. Its type parameter `K` denotes the kind of the type.
  * For example, a type family with two type parameters has the kind `Kind2`.
  *
  * ```typescript
@@ -31,7 +31,21 @@ type Generic4$Constraint<T, A1, A2, A3, A4> = T extends TypeFamily<Kind4> ? HasG
  * ```
  */
 export type Of<T, A> = Of1<T, A>
-export type Of1<T, A1> = T extends TypeFamily<Kind1> ? Reduce<Generic1<T, A1>> : Generic1$Constraint<T, A1>
-export type Of2<T, A1, A2> = T extends TypeFamily<Kind2> ? Reduce<Generic2<T, A1, A2>> : Generic2$Constraint<T, A1, A2>
-export type Of3<T, A1, A2, A3> = T extends TypeFamily<Kind3> ? Reduce<Generic3<T, A1, A2, A3>> : Generic3$Constraint<T, A1, A2, A3>
-export type Of4<T, A1, A2, A3, A4> = T extends TypeFamily<Kind4> ? Reduce<Generic4<T, A1, A2, A3, A4>> : Generic4$Constraint<T, A1, A2, A3, A4>
+export type Of1<T, A1> =
+  T extends TypeFamily<Kind1>
+    ? Reduce<Generic1<T, A1>>
+    : T extends TypeFamily<Kind2>
+        ? Reduce<Generic2<T, any, A1>>
+        : Generic1$Constraint<T, A1>
+export type Of2<T, A1, A2> =
+  T extends TypeFamily<Kind2>
+    ? Reduce<Generic2<T, A1, A2>>
+    : Generic2$Constraint<T, A1, A2>
+export type Of3<T, A1, A2, A3> =
+  T extends TypeFamily<Kind3>
+    ? Reduce<Generic3<T, A1, A2, A3>>
+    : Generic3$Constraint<T, A1, A2, A3>
+export type Of4<T, A1, A2, A3, A4> =
+  T extends TypeFamily<Kind4>
+    ? Reduce<Generic4<T, A1, A2, A3, A4>>
+    : Generic4$Constraint<T, A1, A2, A3, A4>

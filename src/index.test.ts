@@ -94,10 +94,18 @@ namespace test$7 {
     (): Pair<this[0], this[1]>
   }
 
+  interface PairF<A> extends Pair$λ {
+    (): Pair<A, this[1]>
+  }
+
   declare function infer2<T extends TypeFamily<Kind2>, A1, A2>(t: Of2<T, A1, A2>): Of2<T, A1, A2>
 
   declare const pair: Pair<string, number>
+  declare function asVoid<F, A>(fa: Of<F, A>): Of<F, void>
+
+
   declare const box: Box<string>
 
+  const inferred = asVoid(pair as Of<PairF<string>, number>)
   const x = infer2(pair)
 }
