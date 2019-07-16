@@ -1,4 +1,5 @@
 import { Generic, TypeFamily, Of, Kind1, Generic1, Kind2, Generic2, Of2 } from ".";
+import { Carrier2 } from "./generics"
 
 declare class Box<A> {
   [Generic.Type]: Generic1<BoxF, A>
@@ -86,7 +87,6 @@ namespace test$6 {
 namespace test$7 {
   class Pair<A, B> {
     [Generic.Type]: Generic2<Pair$λ, A, B>
-
     constructor(readonly _0: A, readonly _1: B) {}
   }
 
@@ -94,18 +94,17 @@ namespace test$7 {
     (): Pair<this[0], this[1]>
   }
 
-  interface PairF<A> extends Pair$λ {
-    (): Pair<A, this[1]>
-  }
-
   declare function infer2<T extends TypeFamily<Kind2>, A1, A2>(t: Of2<T, A1, A2>): Of2<T, A1, A2>
 
   declare const pair: Pair<string, number>
   declare function asVoid<F, A>(fa: Of<F, A>): Of<F, void>
-
+  declare function infer<T, A1>(fa: Of<T, A1>): Of<T, A1>
 
   declare const box: Box<string>
 
-  const inferred = asVoid(pair as Of<PairF<string>, number>)
+  type Ex = Of<Pair$λ, string>
+  const inferred = infer(pair)
+  const asV = asVoid(pair)
+  type Result = Assert<Eq<Pair<string, void>, typeof asV>>
   const x = infer2(pair)
-}
+ }
