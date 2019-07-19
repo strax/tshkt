@@ -35,7 +35,10 @@ export namespace Generic {
   /**
    * A marker symbol for associating values of `T<A>` to `Generic<TRepr, A>`.
    */
-  export const Type: unique symbol = Symbol("tshkt:Generic.Type")
+  export const Type1: unique symbol = Symbol("tshkt:Generic.Type")
+  export const Type2: unique symbol = Symbol("tshkt:Generic.Type2")
+  export const Type3: unique symbol = Symbol("tshkt:Generic.Type3")
+  export const Type4: unique symbol = Symbol("tshkt:Generic.Type4")
 }
 
 /**
@@ -56,5 +59,14 @@ export namespace Generic {
  * ```
  */
 export interface HasGeneric<G> {
-  [Generic.Type]: G
+  [Generic.Type1]: G
+}
+export interface HasGeneric2<G> {
+  [Generic.Type2]: G
+}
+export interface HasGeneric3<G> {
+  [Generic.Type3]: G
+}
+export interface HasGeneric4<G> {
+  [Generic.Type4]: G
 }

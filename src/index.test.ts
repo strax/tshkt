@@ -1,8 +1,7 @@
 import { Generic, TypeFamily, Of, Kind1, Generic1, Kind2, Generic2, Of2 } from ".";
-import { Carrier2 } from "./generics"
 
 declare class Box<A> {
-  [Generic.Type]: Generic1<BoxF, A>
+  [Generic.Type1]: Generic1<BoxF, A>
 
   readonly value: A
 }
@@ -85,14 +84,38 @@ namespace test$6 {
 
 // Tests kinds * -> * -> *
 namespace test$7 {
-  class Pair<A, B> {
-    [Generic.Type]: Generic2<Pair$λ, A, B>
-    constructor(readonly _0: A, readonly _1: B) {}
+  class Pair<A, B>
+    implements Functor<PairF<A>, B> {
+      [Generic.Type1]: Generic1<PairF<A>, B>
+      [Generic.Type2]: Generic2<Pair$λ, A, B>
+      constructor(readonly _0: A, readonly _1: B) {}
+
+      map <C>(_f: (b: B) => C): Pair<A, C> {
+        return this as any
+      }
+
+      swap (): Pair<B, A> {
+        return new Pair(this._1, this._0)
+      }
   }
 
   interface Pair$λ extends TypeFamily<Kind2> {
     (): Pair<this[0], this[1]>
   }
+
+  interface PairF<A> extends TypeFamily<Kind1> {
+    (): Pair<A, this[0]>
+  }
+
+  interface Functor<F, A> {
+    map <B>(this: Of<F, A>, f: (a: A) => B): Of<F, B>
+  }
+
+  interface IsFunctor<F> extends TypeFamily<Kind1> {
+    (): Functor<F, this[0]>
+  }
+
+  declare function map <F extends IsFunctor<F>, A, B>(f: (a: A) => B, fa: Of<F, A>): Of<F, A>
 
   declare function infer2<T extends TypeFamily<Kind2>, A1, A2>(t: Of2<T, A1, A2>): Of2<T, A1, A2>
 
@@ -102,6 +125,8 @@ namespace test$7 {
 
   declare const box: Box<string>
 
+  const inF = map(x => x, pair).swap()
+  const f = pair.map(x => undefined).swap()
   type Ex = Of<Pair$λ, string>
   const inferred = infer(pair)
   const asV = asVoid(pair)
